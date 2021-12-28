@@ -1,11 +1,14 @@
 package guru.springframework.recipeapp.services;
 
 import guru.springframework.recipeapp.commands.IngredientCommand;
+import guru.springframework.recipeapp.converters.IngredientCommandToIngredient;
 import guru.springframework.recipeapp.converters.IngredientToIngredientCommand;
+import guru.springframework.recipeapp.converters.UnitOfMeasureCommandToUnitOfMeasure;
 import guru.springframework.recipeapp.converters.UnitOfMeasureToUnitOfMeasureCommand;
 import guru.springframework.recipeapp.domain.Ingredient;
 import guru.springframework.recipeapp.domain.Recipe;
 import guru.springframework.recipeapp.repositories.RecipeRepository;
+import guru.springframework.recipeapp.repositories.UnitOfMeasureRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -20,22 +23,34 @@ import static org.mockito.Mockito.*;
 public class IngredientServiceImplTest {
 
     private final IngredientToIngredientCommand ingredientToIngredientCommand;
+    private final IngredientCommandToIngredient ingredientCommandToIngredient;
 
     @Mock
     RecipeRepository recipeRepository;
+
+    @Mock
+    UnitOfMeasureRepository unitOfMeasureRepository;
 
     IngredientService ingredientService;
 
     //init converters
     public IngredientServiceImplTest() {
-        this.ingredientToIngredientCommand = new IngredientToIngredientCommand(new UnitOfMeasureToUnitOfMeasureCommand());
+        this.ingredientToIngredientCommand = new IngredientToIngredientCommand(
+                new UnitOfMeasureToUnitOfMeasureCommand());
+
+        this.ingredientCommandToIngredient = new IngredientCommandToIngredient(
+                new UnitOfMeasureCommandToUnitOfMeasure());
     }
 
     @BeforeEach
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        ingredientService = new IngredientServiceImpl(ingredientToIngredientCommand, recipeRepository);
+        ingredientService = new IngredientServiceImpl(
+                ingredientToIngredientCommand,
+                ingredientCommandToIngredient,
+                recipeRepository,
+                unitOfMeasureRepository);
     }
 
     @Test

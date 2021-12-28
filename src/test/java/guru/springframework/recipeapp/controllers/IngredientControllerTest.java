@@ -3,6 +3,7 @@ package guru.springframework.recipeapp.controllers;
 import guru.springframework.recipeapp.commands.RecipeCommand;
 import guru.springframework.recipeapp.services.IngredientService;
 import guru.springframework.recipeapp.services.RecipeService;
+import guru.springframework.recipeapp.services.UnitOfMeasureService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -28,6 +29,9 @@ public class IngredientControllerTest {
     @Mock
     RecipeService recipeService;
 
+    @Mock
+    UnitOfMeasureService unitOfMeasureService;
+
     IngredientController controller;
 
     MockMvc mockMvc;
@@ -36,7 +40,7 @@ public class IngredientControllerTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        controller = new IngredientController(recipeService, ingredidientService);
+        controller = new IngredientController(recipeService, ingredidientService, unitOfMeasureService);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
